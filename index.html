@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Synchro - Page Principale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #f4f4f4;
+            padding: 10px;
+            position: relative;
+        }
+
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .dropdown button {
+            background-color: #f4f4f4;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            min-width: 160px;
+            text-align: left;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        body.dark-theme {
+            background-color: #2f2f39;
+            color: #ffffff;
+        }
+
+        .dark-theme header {
+            background-color: #5b5f65;
+        }
+
+        .dark-theme .dropdown button {
+            background-color: #5b5f65;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .dark-theme .fixed-resistance {
+            background-color: #ddd3ff;
+            color: #ffffff;
+        }
+        .dark-theme .resistance-percentage {
+            background-color: #ddd3ff;
+            color: #ffffff;
+        }
+        .spells-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            /* 3 colonnes */
+            grid-template-rows: repeat(4, auto);
+            /* 4 lignes */
+            gap: 10px;
+            padding: 10px;
+            max-width: 150px;
+            /* Largeur fixe pour garantir 4x3 */
+            margin: 0 auto;
+        }
+
+        .spell {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            padding-top: 75%;
+            /* Réduction de la hauteur relative des cases */
+            background-size: contain;
+            /* Ajuste l'image à la case */
+            background-repeat: no-repeat;
+            background-position: center;
+            border: 1px solid transparent;
+            cursor: pointer;
+            position: relative;
+            color: black;
+        }
+
+        .spell:hover::after {
+            content: attr(data-spell-name);
+            position: absolute;
+            top: -30px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        .spell.selected {
+            filter: grayscale(100%);
+            /* Applique le filtre gris uniquement à l'image */
+            background-color: transparent;
+            /* Supprime le carré noir */
+        }
+
+        .spell::before {
+            content: "";
+            display: block;
+            padding-top: 75%;
+            /* Ratio réduit pour des cases plus petites */
+        }
+
+        .bottom-section {
+            padding: 10px;
+        }
+
+        .bottom-section input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 14px;
+            /* Réduction de la taille des champs */
+            width: 150px;
+            /* Réduction de la largeur des champs */
+        }
+
+        .damage-display {
+            font-size: 20px;
+            /* Réduction de la taille du texte */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="dropdown">
+            <button>Menu</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="openConfiguration()">Configuration</a>
+                <a href="#" onclick="goToHome()">Accueil</a>
+                <!-- <a href="#" onclick="resetSelection()">Nouvelle Synchro</a> -->
+                <a href="#" id="theme-toggle"><span id="theme-icon">🌙</span></a>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="bottom-section">
+        <input type="number" class="resistance-percentage" id="resistance-percentage" placeholder="% Résistance Air" oninput="calculateDamage()" />
+        <input type="number" class="fixed-resistance" id="fixed-resistance" placeholder="Résistance fixe Air" oninput="calculateDamage()" />
+        <button onclick="resetSelection()">Nouvelle Synchro</button>
+        <div class="damage-display" id="damage-display">Dégâts : 0 </div>
+    </div>
+
+    <div class="spells-container" id="spells-container">
+        <!-- Les sorts seront affichés dynamiquement ici -->
+    </div>
+
+    <script>
+        const spellsData = {
+            spell1: { Perturbation: 'images/pertubation.png', Rouage: 'images/rouage.png' },
+            spell2: { Gelure: 'images/gelure.png', Poussière: 'images/poussiere.png' },
+            spell3: { Souvenir: 'images/souvenir.png', Permutation: 'images/permutation.png' },
+            spell4: { "Frappe du Xélor": 'images/frappe_du_xelor.png', Pendule: 'images/pendule.png' },
+            spell5: { Téléportation: 'images/teleportation.png', Astrolabe: 'images/astrolabe.png' },
+            spell6: { Engrenage: 'images/engrenage.png', "Compte-goutte": 'images/compte_goutte.png' },
+            spell7: { "Fuite de temps": 'images/fuite_du_temps.png', Prémonition: 'images/premonition.png' },
+            spell8: { Rauleback: 'images/raulebaque.png', Instabilité: 'images/instabilite.png' },
+            spell9: { Rembobinage: 'images/rembobinage.png', Réménance: 'images/remanance.png' },
+            spell10: { Paradoxe: 'images/paradoxe.png', Faille: 'images/faille.png' },
+            spell11: { Distorsion: 'images/distortion.png', "Sables du temps": 'images/sables_du_temps.png' },
+            spell12: { Désynchronisation: 'images/desynchronisation.png', "Espaces-temps": 'images/espace_temps.png' }
+        };
+
+        function loadSpells() {
+            const config = JSON.parse(localStorage.getItem('synchroConfig')) || {};
+            const spellsContainer = document.getElementById('spells-container');
+
+            Object.keys(spellsData).forEach(spellKey => {
+                const variant = config.spells ? config.spells[spellKey] : Object.keys(spellsData[spellKey])[0];
+                const imageUrl = spellsData[spellKey][variant];
+
+                const spellElement = document.createElement('div');
+                spellElement.classList.add('spell');
+                spellElement.style.backgroundImage = `url(${imageUrl})`;
+                spellElement.setAttribute('data-spell-name', variant);
+
+                spellElement.onclick = () => toggleSpell(spellElement);
+                spellsContainer.appendChild(spellElement);
+            });
+        }
+
+        function openConfiguration() {
+            window.location.href = "configuration.html";
+        }
+
+        function goToHome() {
+            alert('Redirection vers l\'accueil (à implémenter).');
+        }
+
+        function resetSelection() {
+            const spells = document.querySelectorAll('.spell');
+            spells.forEach(spell => spell.classList.remove('selected'));
+            document.getElementById('damage-display').innerText = 'Dégâts : 0';
+        }
+
+        function toggleSpell(element) {
+            element.classList.toggle('selected');
+            calculateDamage();
+        }
+
+        function calculateDamage() {
+            const tfCount = document.querySelectorAll('.spell.selected').length; // Nombre de Téléfrags sélectionnés
+            const baseDamage = 208; // Dégâts de base avec 0 Téléfrag
+            const resistancePercentage = parseFloat(document.getElementById('resistance-percentage').value) || 0; // Résistance en %
+            const fixedResistance = parseFloat(document.getElementById('fixed-resistance').value) || 0; // Résistance fixe
+
+            // Calcul des dégâts en fonction des Téléfrags
+            let damageMultiplier = baseDamage; // Par défaut, dégâts pour 0 ou 1 Téléfrag
+            if (tfCount >= 2) {
+                damageMultiplier = 208 + 416 * (tfCount - 1);
+            }
+
+            // Application des résistances
+            const reducedDamage = damageMultiplier * (1 - resistancePercentage / 100) - fixedResistance;
+            const finalDamage = Math.max(0, reducedDamage); // Empêche les dégâts négatifs
+
+            // Affiche les dégâts finaux
+            document.getElementById('damage-display').innerText = `Dégâts : ${finalDamage.toFixed(0)}`;
+        }
+
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        if (localStorage.getItem('darkTheme') === 'true') {
+            body.classList.add('dark-theme');
+            themeIcon.textContent = '🌞';
+            themeToggle.textContent = '🌞';
+        }
+
+        themeToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            body.classList.toggle('dark-theme');
+            const isDark = body.classList.contains('dark-theme');
+
+            themeIcon.textContent = isDark ? '🌞' : '🌙';
+            themeToggle.textContent = isDark ? '🌞' : '🌙';
+
+            localStorage.setItem('darkTheme', isDark);
+        });
+
+        window.onload = loadSpells;
+    </script>
+</body>
+
+</html>
