@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuration Synchro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #f4f4f4;
+            padding: 10px 0;
+        }
+
+        header button {
+            margin: 0 10px;
+            padding: 10px 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        
+        h1 {
+            font-size: 24px;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-top: 20px;
+        }
+
+        .configuration-section {
+            padding: 10px;
+        }
+
+        .column-container {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .column {
+            display: grid;
+            grid-template-rows: repeat(6, auto);
+            gap: 5px;
+        }
+
+        .column label {
+            display: flex;
+            align-items: center;
+        }
+
+        .column input {
+            margin-right: 5px;
+        }
+
+        .spell-image {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .column-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            position: relative;
+            /* Nécessaire pour positionner la barre */
+        }
+
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <button onclick="returnToMainPage()">Retour</button>
+    </header>
+
+    <div class="configuration-section">
+        <h1>Configuration de la Synchro</h1>
+
+        <!-- Niveau de la Synchro -->
+        <div>
+            <h2>Niveau de la Synchro</h2>
+            <label>
+                <input type="radio" name="synchro-level" value="1" checked onchange="saveConfiguration()" /> Niveau 1
+            </label>
+            <label>
+                <input type="radio" name="synchro-level" value="2" onchange="saveConfiguration()" /> Niveau 2
+            </label>
+        </div>
+
+        <!-- Variantes des sorts -->
+        <div>
+            <h2>Choix des Variantes</h2>
+            <div class="column-container">
+                <div class="column">
+                    <label>
+                        <img src="images/pertubation.png" class="spell-image" alt="Perturbation">
+                        <input type="radio" name="spell1" value="Perturbation" checked onchange="saveConfiguration()" />
+                        Perturbation
+                    </label>
+                    <label>
+                        <img src="images/gelure.png" class="spell-image" alt="Gelure">
+                        <input type="radio" name="spell2" value="Gelure" checked onchange="saveConfiguration()" />
+                        Gelure
+                    </label>
+                    <label>
+                        <img src="images/souvenir.png" class="spell-image" alt="Souvenir">
+                        <input type="radio" name="spell3" value="Souvenir" checked onchange="saveConfiguration()" />
+                        Souvenir
+                    </label>
+                    <label>
+                        <img src="images/frappe_du_xelor.png" class="spell-image" alt="Frappe du Xélor">
+                        <input type="radio" name="spell4" value="Frappe du Xélor" checked
+                            onchange="saveConfiguration()" /> Frappe du Xélor
+                    </label>
+                    <label>
+                        <img src="images/teleportation.png" class="spell-image" alt="Téléportation">
+                        <input type="radio" name="spell5" value="Téléportation" checked
+                            onchange="saveConfiguration()" /> Téléportation
+                    </label>
+                    <label>
+                        <img src="images/engrenage.png" class="spell-image" alt="Engrenage">
+                        <input type="radio" name="spell6" value="Engrenage" checked onchange="saveConfiguration()" />
+                        Engrenage
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+                        <img src="images/rouage.png" class="spell-image" alt="Rouage">
+                        <input type="radio" name="spell1" value="Rouage" onchange="saveConfiguration()" /> Rouage
+                    </label>
+                    <label>
+                        <img src="images/poussiere.png" class="spell-image" alt="Poussière">
+                        <input type="radio" name="spell2" value="Poussière" onchange="saveConfiguration()" /> Poussière
+                    </label>
+                    <label>
+                        <img src="images/permutation.png" class="spell-image" alt="Permutation">
+                        <input type="radio" name="spell3" value="Permutation" onchange="saveConfiguration()" />
+                        Permutation
+                    </label>
+                    <label>
+                        <img src="images/pendule.png" class="spell-image" alt="Pendule">
+                        <input type="radio" name="spell4" value="Pendule" onchange="saveConfiguration()" /> Pendule
+                    </label>
+                    <label>
+                        <img src="images/astrolabe.png" class="spell-image" alt="Astrolabe">
+                        <input type="radio" name="spell5" value="Astrolabe" onchange="saveConfiguration()" /> Astrolabe
+                    </label>
+                    <label>
+                        <img src="images/compte_goutte.png" class="spell-image" alt="Compte-goutte">
+                        <input type="radio" name="spell6" value="Compte-goutte" onchange="saveConfiguration()" />
+                        Compte-goutte
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+                        <img src="images/fuite_du_temps.png" class="spell-image" alt="Fuite de temps">
+                        <input type="radio" name="spell7" value="Fuite de temps" checked
+                            onchange="saveConfiguration()" /> Fuite de temps
+                    </label>
+                    <label>
+                        <img src="images/raulebaque.png" class="spell-image" alt="Rauleback">
+                        <input type="radio" name="spell8" value="Rauleback" checked onchange="saveConfiguration()" />
+                        Rauleback
+                    </label>
+                    <label>
+                        <img src="images/rembobinage.png" class="spell-image" alt="Rembobinage">
+                        <input type="radio" name="spell9" value="Rembobinage" checked onchange="saveConfiguration()" />
+                        Rembobinage
+                    </label>
+                    <label>
+                        <img src="images/paradoxe.png" class="spell-image" alt="Paradoxe">
+                        <input type="radio" name="spell10" value="Paradoxe" checked onchange="saveConfiguration()" />
+                        Paradoxe
+                    </label>
+                    <label>
+                        <img src="images/distortion.png" class="spell-image" alt="Distorsion">
+                        <input type="radio" name="spell11" value="Distorsion" checked onchange="saveConfiguration()" />
+                        Distorsion
+                    </label>
+                    <label>
+                        <img src="images/desynchronisation.png" class="spell-image" alt="Désynchronisation">
+                        <input type="radio" name="spell12" value="Désynchronisation" checked
+                            onchange="saveConfiguration()" /> Désynchronisation
+                    </label>
+                </div>
+                <div class="column">
+                    <label>
+                        <img src="images/premonition.png" class="spell-image" alt="Prémonition">
+                        <input type="radio" name="spell7" value="Prémonition" onchange="saveConfiguration()" />
+                        Préminition
+                    </label>
+                    <label>
+                        <img src="images/instabilite.png" class="spell-image" alt="Instabilité">
+                        <input type="radio" name="spell8" value="Instabilité" onchange="saveConfiguration()" />
+                        Instabilité
+                    </label>
+                    <label>
+                        <img src="images/remanance.png" class="spell-image" alt="Réménance">
+                        <input type="radio" name="spell9" value="Réménance" onchange="saveConfiguration()" /> Réménance
+                    </label>
+                    <label>
+                        <img src="images/faille.png" class="spell-image" alt="Faille">
+                        <input type="radio" name="spell10" value="Faille" onchange="saveConfiguration()" /> Faille
+                    </label>
+                    <label>
+                        <img src="images/sables_du_temps.png" class="spell-image" alt="Sables du temps">
+                        <input type="radio" name="spell11" value="Sables du temps" onchange="saveConfiguration()" />
+                        Sables du temps
+                    </label>
+                    <label>
+                        <img src="images/espace_temps.png" class="spell-image" alt="Espaces-temps">
+                        <input type="radio" name="spell12" value="Espaces-temps" onchange="saveConfiguration()" />
+                        Espaces-temps
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function returnToMainPage() {
+            window.location.href = "index.html";
+        }
+
+        function saveConfiguration() {
+            const config = {
+                synchroLevel: document.querySelector('input[name="synchro-level"]:checked').value,
+                spells: Array.from(document.querySelectorAll('input[type="radio"]:checked')).reduce((acc, input) => {
+                    const name = input.name;
+                    const value = input.value;
+                    acc[name] = value;
+                    return acc;
+                }, {})
+            };
+
+            localStorage.setItem('synchroConfig', JSON.stringify(config));
+        }
+
+        function loadConfiguration() {
+            const config = JSON.parse(localStorage.getItem('synchroConfig'));
+            if (config) {
+                document.querySelector(`input[name="synchro-level"][value="${config.synchroLevel}"]`).checked = true;
+                for (const [name, value] of Object.entries(config.spells)) {
+                    const input = document.querySelector(`input[name="${name}"][value="${value}"]`);
+                    if (input) input.checked = true;
+                }
+            }
+        }
+
+        // Load configuration on page load
+        loadConfiguration();
+    </script>
+</body>
+
+</html>
