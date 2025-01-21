@@ -247,6 +247,9 @@
 
             // Calcul des dégâts en fonction des Téléfrags
             let damageMultiplier = baseDamage; // Par défaut, dégâts pour 0 ou 1 Téléfrag
+            if (tfCount == 0) {
+                damageMultiplier = 0;
+            }
             if (tfCount >= 2) {
                 damageMultiplier = 208 + 416 * (tfCount - 1);
             }
