@@ -78,10 +78,12 @@
             background-color: #ddd3ff;
             color: #ffffff;
         }
+
         .dark-theme .resistance-percentage {
             background-color: #ddd3ff;
             color: #ffffff;
         }
+
         .spells-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -158,6 +160,28 @@
             /* Réduction de la taille du texte */
             margin-top: 10px;
         }
+
+        .bottom-section input {
+            margin: 5px;
+            padding: 10px;
+            font-size: 14px;
+            width: 150px;
+        }
+
+        .bottom-section input.power,
+        .bottom-section input.fixed-damage {
+            background-color: #f0f0f0;
+            color: #000;
+        }
+
+        .xelor-level {
+            margin: 5px;
+            padding: 10px;
+            font-size: 14px;
+            width: 150px;
+            background-color: #f0f0f0;
+            color: #000;
+        }
     </style>
 </head>
 
@@ -176,8 +200,14 @@
 
 
     <div class="bottom-section">
-        <input type="number" class="resistance-percentage" id="resistance-percentage" placeholder="% Résistance Air" oninput="calculateDamage()" />
-        <input type="number" class="fixed-resistance" id="fixed-resistance" placeholder="Résistance fixe Air" oninput="calculateDamage()" />
+        <input type="number" class="xelor-level" id="xelor-level" placeholder="Niveau Xélor"
+            oninput="saveXelorLevel()" />
+        <input type="number" class="resistance-percentage" id="resistance-percentage" placeholder="% Résistance Air"
+            oninput="calculateDamage()" />
+        <input type="number" class="fixed-resistance" id="fixed-resistance" placeholder="Résistance fixe Air"
+            oninput="calculateDamage()" />
+        <input type="number" class="power" id="power" placeholder="Puissance" oninput="calculateDamage()" />
+        <input type="number" class="fixed-damage" id="fixed-damage" placeholder="Do fix" oninput="calculateDamage()" />
         <button onclick="resetSelection()">Nouvelle Synchro</button>
         <div class="damage-display" id="damage-display">Dégâts : 0 </div>
     </div>
@@ -187,6 +217,19 @@
     </div>
 
     <script>
+        function saveXelorLevel() {
+            const xelorLevel = parseInt(document.getElementById('xelor-level').value) || 1; // Par défaut, niveau 1
+            localStorage.setItem('xelorLevel', xelorLevel);
+            calculateDamage();
+        }
+
+        function loadXelorLevel() {
+            const savedLevel = localStorage.getItem('xelorLevel');
+            if (savedLevel) {
+                document.getElementById('xelor-level').value = savedLevel;
+            }
+        }
+
         const spellsData = {
             spell1: { Perturbation: 'images/pertubation.png', Rouage: 'images/rouage.png' },
             spell2: { Gelure: 'images/gelure.png', Poussière: 'images/poussiere.png' },
@@ -241,26 +284,33 @@
 
         function calculateDamage() {
             const tfCount = document.querySelectorAll('.spell.selected').length; // Nombre de Téléfrags sélectionnés
-            const baseDamage = 208; // Dégâts de base avec 0 Téléfrag
+            const xelorLevel = parseInt(localStorage.getItem('xelorLevel')) || 1; // Niveau Xélor, par défaut 1 si non défini
             const resistancePercentage = parseFloat(document.getElementById('resistance-percentage').value) || 0; // Résistance en %
             const fixedResistance = parseFloat(document.getElementById('fixed-resistance').value) || 0; // Résistance fixe
+            const power = parseFloat(document.getElementById('power').value) || 0; // Puissance
+            const fixedDamage = parseFloat(document.getElementById('fixed-damage').value) || 0; // Dommages fixes
 
-            // Calcul des dégâts en fonction des Téléfrags
-            let damageMultiplier = baseDamage; // Par défaut, dégâts pour 0 ou 1 Téléfrag
-            if (tfCount == 0) {
-                damageMultiplier = 0;
+            // Calcul des dégâts de base selon le niveau du Xélor et le nombre de Téléfrags
+            let baseDamage;
+            if (tfCount === 1) {
+                baseDamage = 6.6 * xelorLevel - 521.2;
+            } else if (tfCount >= 2) {
+                baseDamage = (6.6 * xelorLevel - 521.2) + (tfCount - 1) * 436;
+            } else {
+                baseDamage = 0;
             }
-            if (tfCount >= 2) {
-                damageMultiplier = 208 + 416 * (tfCount - 1);
-            }
+
+            // Application de la puissance et des dommages fixes
+            const modifiedDamage = baseDamage * (1 + power / 100) + fixedDamage;
 
             // Application des résistances
-            const reducedDamage = damageMultiplier * (1 - resistancePercentage / 100) - fixedResistance;
+            const reducedDamage = modifiedDamage * (1 - resistancePercentage / 100) - fixedResistance;
             const finalDamage = Math.max(0, reducedDamage); // Empêche les dégâts négatifs
 
             // Affiche les dégâts finaux
             document.getElementById('damage-display').innerText = `Dégâts : ${finalDamage.toFixed(0)}`;
         }
+
 
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
@@ -283,7 +333,10 @@
             localStorage.setItem('darkTheme', isDark);
         });
 
-        window.onload = loadSpells;
+        window.onload = () => {
+            loadXelorLevel();
+            loadSpells();
+        };
     </script>
 </body>
 
