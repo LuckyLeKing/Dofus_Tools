@@ -24,7 +24,7 @@
             font-size: 12px;
             cursor: pointer;
         }
-        
+
         h1 {
             font-size: 24px;
         }
@@ -74,14 +74,13 @@
             position: relative;
             /* Nécessaire pour positionner la barre */
         }
-
-        
     </style>
 </head>
 
 <body>
     <header>
         <button onclick="returnToMainPage()">Retour</button>
+        <a href="#" onclick="goToSupport()">Me soutenir</a>
     </header>
 
     <div class="configuration-section">
@@ -222,6 +221,9 @@
     <script>
         function returnToMainPage() {
             window.location.href = "index.html";
+        }
+        function goToSupport() {
+            alert('Redirection vers la page pour me soutenir.');
         }
 
         function saveConfiguration() {
