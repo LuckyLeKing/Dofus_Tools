@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Projet Dofus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            background-color: #f4f4f4;
+            padding: 10px;
+            position: relative;
+        }
+
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .dropdown button {
+            background-color: #f4f4f4;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            min-width: 160px;
+            text-align: left;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="dropdown">
+            <button>Menu</button>
+            <div class="dropdown-content">
+                <a href="#" onclick="openConfiguration()">Configuration</a>
+                <a href="#" onclick="returnToMainPage()">Accueil</a>
+                <!-- <a href="#" onclick="resetSelection()">Nouvelle Synchro</a> -->
+                <a href="#" id="theme-toggle"><span id="theme-icon">🌙</span></a>
+            </div>
+        </div>
+    </header>
+    <main>
+        <section>
+            <p>Si vous voulez m'aider vous pouvez m'envoyer les dégats de la synchro contre un poutch</br>Il me faut
+                synchro téléfrag 1, 2 et 3</p>
+            <p>Vous pouvez m'envoyer ça sur discord: lucky2king</br>Ou sur le forum <a
+                    href="https://www.dofus.com/fr/forum/1982-classes/2433073-synchro-calculator-2#entry13486994">ici</a>
+            </p>
+
+            <p>
+                Si vous avez des idées d'améliorations ou des bugs à signaler, n'hésitez pas à me contacter.
+            </p>
+            <p>
+                Si vous voulez me soutenir financièrement, vous pouvez me faire un don en Kamas. DM discord pour avoir
+                mon pseudo en jeu. <br>
+                Ou en crypto monnaie: <br>
+                BTC: bc1qvcpw3905cyjks87chjk6jpw0909dhqp8xpj3dx <br>
+                Sol: 3QmBXLYjXAn6sQZPiAPm4cQz6UM7xzKKdRxF9wb64JDe <br>
+                ETH (et EVM): 0xf03d713B31e4b441B98754532132A33AC2ae8f06 <br>
+            </p>
+        </section>
+    </main>
+
+
+
+
+    <script>
+        function returnToMainPage() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+
+</html>
